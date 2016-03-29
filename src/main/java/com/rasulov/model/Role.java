@@ -12,16 +12,13 @@ import java.util.Set;
 @Entity
 @Table(name = "role")
 public class Role {
-    @ManyToMany(mappedBy = "userRoles")
-    private Set<User> users = new HashSet<>();
+//    @ManyToMany(mappedBy = "userRoles")
+//    private Set<User> users = new HashSet<>();
 
     @Id
     @GeneratedValue
     @Column(name = "role_id")
     private Long id;
-
-    @Enumerated(EnumType.STRING)
-    private ListRole listRole;
 
 
 

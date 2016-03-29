@@ -2,6 +2,7 @@ package com.rasulov.model.dao;
 
 import com.rasulov.model.User;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface UserDao {
@@ -9,7 +10,7 @@ public interface UserDao {
 
     User findByUserName(String name);
 
-    void add(User user);
+    void addUser(User user);
 
     void delete(User user);
 

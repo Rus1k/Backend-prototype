@@ -2,32 +2,33 @@ package com.rasulov.model.dao.impl;
 
 import com.rasulov.model.User;
 import com.rasulov.model.dao.UserDao;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
 
-    @PersistenceContext
+    @Autowired
     private EntityManager entityManager;
 
     @Override
     public List<User> getAllUsers() {
-
-        return entityManager.createQuery("select * from user").getResultList();
+        Query query = entityManager.createQuery("select c from user c");
+        return (List<User>) query.getResultList();
     }
 
     @Override
     public User findByUserName(String searchName) {
         User user = (User) entityManager.createQuery(
-                "select c from User c where c.name = :searchName")
-                .setParameter("searchName", searchName.trim()+"%").getSingleResult();
+                "select c from user c where c.name = :searchName")
+                .setParameter("searchName", searchName.trim() + "%").getSingleResult();
         return user;
     }
 
     @Override
-    public void add(User user) {
+    public void addUser(User user) {
         entityManager.persist(user);
     }
 
