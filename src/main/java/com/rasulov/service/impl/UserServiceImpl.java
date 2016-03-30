@@ -3,22 +3,28 @@ package com.rasulov.service.impl;
 import com.rasulov.model.User;
 import com.rasulov.model.dao.UserDao;
 import com.rasulov.service.UserService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
 @Service
+@Slf4j
+@Transactional
 public class UserServiceImpl implements UserService {
 
+    @Autowired
     private UserDao userDao;
 
     @Override
     public User findByUserName(String userName) {
+        log.info("searching user withs name {}", userName);
         return userDao.findByUserName(userName);
     }
 
@@ -44,6 +50,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isUserNameExist(String userName) {
-        return findByUserName(userName) != null;
+        boolean isExist = findByUserName(userName) != null;
+        log.info("is exist user name? " + isExist);
+        return isExist;
     }
 }

@@ -2,12 +2,16 @@ package com.rasulov.model.dao.impl;
 
 import com.rasulov.model.User;
 import com.rasulov.model.dao.UserDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
 
+@Component
+@Slf4j
 public class UserDaoImpl implements UserDao {
 
     @Autowired
@@ -15,16 +19,21 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getAllUsers() {
-        Query query = entityManager.createQuery("select c from user c");
+        Query query = entityManager.createQuery("select c from User c");
         return (List<User>) query.getResultList();
     }
 
     @Override
     public User findByUserName(String searchName) {
-        User user = (User) entityManager.createQuery(
-                "select c from user c where c.name = :searchName")
-                .setParameter("searchName", searchName.trim() + "%").getSingleResult();
-        return user;
+        List<User> listUsers = entityManager.createQuery(
+                "select c from User c where c.name = :searchName")
+                .setParameter("searchName", searchName.trim() + "%").getResultList();
+        if (listUsers.isEmpty()) {
+            log.info("user with name {} not found",searchName);
+            return null;
+        }
+        log.info("found user");
+        return listUsers.get(0);
     }
 
     @Override
